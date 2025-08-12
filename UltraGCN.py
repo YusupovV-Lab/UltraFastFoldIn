@@ -24,7 +24,6 @@ class UltraGCN(nn.Module):
     def init_embedding(self):
         self.E0 = nn.Embedding(self.n_users + self.n_items, self.latent_dim)
         nn.init.xavier_uniform_(self.E0.weight)
-        #self.E0.weight = nn.Parameter(self.E0.weight)
         
         self.En = nn.Embedding(self.n_users, self.latent_dim)
         nn.init.xavier_uniform_(self.En.weight)
@@ -51,9 +50,6 @@ class UltraGCN(nn.Module):
         E_lyr = self.E0.weight
 
         initial_user_Embed, initial_item_Embed = torch.split(self.E0.weight, [self.n_users, self.n_items])
-
-        #print((1 + 1 / torch.sqrt(1 + self.i_d)).shape)
-        #print(initial_item_Embed.shape)
         final_user_Embed = (1 + torch.sqrt(1 + self.u_d) / self.u_d) * initial_user_Embed
         final_item_Embed = (1 + 1 / torch.sqrt(1 + self.i_d)).transpose(0, 1) * initial_item_Embed
 
